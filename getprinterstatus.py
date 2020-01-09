@@ -7,10 +7,8 @@ url = "http://10.42.0.102:80/command"
 #data = {'':'getprinterstatus'}
 data = 'getprinterstatus'
 
-import threading
-
-def getprinterstatus():
-    threading.Timer(3.0, getprinterstatus).start()
+def getprinterstats():
+    threading.Timer(3.0, getprinterstats).start()
     # get data and parse it
     r = requests.post(url=url, data=data) 
     resp = r.text
@@ -39,4 +37,4 @@ def getprinterstatus():
     f.write('Chamber Temp: ' + chamber_temp + '°C (current)' + '\n')
     f.close()
 
-getprinterstatus()
+getprinterstats()
