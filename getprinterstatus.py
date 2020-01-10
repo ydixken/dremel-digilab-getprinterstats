@@ -11,8 +11,8 @@ debug = False
 
 import threading
 
-def getprinterstatus():
-    threading.Timer(3.0, getprinterstatus).start()
+def getprinterstats():
+    threading.Timer(3.0, getprinterstats).start()
     # get data and parse it
     r = requests.post(url=url, data=data) 
     resp = r.text
@@ -63,4 +63,4 @@ def getprinterstatus():
         print('Plate Temp: ' + plate_temp + '°C (current) ' + '/ ' + plate_target_temp + '°C (target)' + '\n')
         print('Chamber Temp: ' + chamber_temp + '°C (current)' + '\n')
 
-getprinterstatus()
+getprinterstats()
