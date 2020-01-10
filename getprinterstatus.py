@@ -9,8 +9,6 @@ data = 'getprinterstatus'
 
 debug = False
 
-import threading
-
 def getprinterstats():
     threading.Timer(3.0, getprinterstats).start()
     # get data and parse it
