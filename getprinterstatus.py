@@ -7,7 +7,7 @@ url = "http://10.42.0.102:80/command"
 #data = {'':'getprinterstatus'}
 data = 'getprinterstatus'
 
-debug = True
+debug = False
 
 import threading
 
@@ -29,7 +29,7 @@ def getprinterstatus():
     nozzle_temp = str(encoded['temperature'])
     layer = str(encoded['layer'])
     chamber_temp = str(encoded['chamber_temperature'])
-    
+
     # write to file
     if not debug:
         f = open("printer.txt", "w")
@@ -62,7 +62,5 @@ def getprinterstatus():
         print('Nozzle Temp: ' + nozzle_temp + '°C (current) ' + '/ ' + nozzle_target_temp + '°C (target)' + '\n')
         print('Plate Temp: ' + plate_temp + '°C (current) ' + '/ ' + plate_target_temp + '°C (target)' + '\n')
         print('Chamber Temp: ' + chamber_temp + '°C (current)' + '\n')
-
-
 
 getprinterstatus()
