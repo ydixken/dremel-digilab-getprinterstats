@@ -7,6 +7,8 @@ url = "http://10.42.0.102:80/command"
 #data = {'':'getprinterstatus'}
 data = 'getprinterstatus'
 
+debug = True
+
 import threading
 
 def getprinterstatus():
@@ -16,10 +18,10 @@ def getprinterstatus():
     resp = r.text
     json_string = r.text
     encoded = json.loads(json_string)
-    jobname = encoded['jobname']
+    jobname = encoded['jobname'].strip('.gcode')
     progress = str(encoded['progress'])
-    remaining_seconds = str(int(encoded['remaining']))
-    elapsed_seconds = str(int(encoded['elaspedtime']))
+    remaining_seconds = int(encoded['remaining'])
+    elapsed_seconds = int(encoded['elaspedtime'])
     filament_type = encoded['filament_type ']
     plate_target_temp = str(encoded['buildPlate_target_temperature'])
     plate_temp = str(encoded['platform_temperature'])
@@ -27,16 +29,40 @@ def getprinterstatus():
     nozzle_temp = str(encoded['temperature'])
     layer = str(encoded['layer'])
     chamber_temp = str(encoded['chamber_temperature'])
+    
     # write to file
-    f = open("printer.txt", "w")
-    f.write('Current Job: ' + jobname + '\n')
-    f.write('Progress: ' + progress + '%' + '\n')
-    f.write('Time Remaining: ' + remaining_seconds + 's' + '\n')
-    f.write('Time Elapsed: ' + elapsed_seconds + 's' + '\n')
-    f.write('Filament: ' + filament_type + '\n')
-    f.write('Nozzle Temp: ' + nozzle_temp + '°C (current) ' + '/ ' + nozzle_target_temp + '°C (target)' + '\n')
-    f.write('Plate Temp: ' + plate_temp + '°C (current) ' + '/ ' + plate_target_temp + '°C (target)' + '\n')
-    f.write('Chamber Temp: ' + chamber_temp + '°C (current)' + '\n')
-    f.close()
+    if not debug:
+        f = open("printer.txt", "w")
+        f.write('Current Job: ' + jobname + '\n')
+        f.write('Progress: ' + progress + '%' + '\n')
+        if remaining_seconds > 0:
+            remaining_seconds = str(remaining_seconds)
+            f.write('Time Remaining: ' + remaining_seconds + 's' + '\n')
+        else:
+            pass
+        elapsed_seconds = str(elapsed_seconds)
+        f.write('Time Elapsed: ' + elapsed_seconds + 's' + '\n')
+        f.write('Filament: ' + filament_type + '\n')
+        f.write('Nozzle Temp: ' + nozzle_temp + '°C (current) ' + '/ ' + nozzle_target_temp + '°C (target)' + '\n')
+        f.write('Plate Temp: ' + plate_temp + '°C (current) ' + '/ ' + plate_target_temp + '°C (target)' + '\n')
+        f.write('Chamber Temp: ' + chamber_temp + '°C (current)' + '\n')
+        f.close()
+    else: 
+        print(encoded)
+        print('Current Job: ' + jobname + '\n')
+        print('Progress: ' + progress + '%' + '\n')
+        if remaining_seconds > 0:
+            remaining_seconds = str(remaining_seconds)
+            print('Time Remaining: ' + remaining_seconds + 's' + '\n')
+        else:
+            pass
+        elapsed_seconds = str(elapsed_seconds)
+        print('Time Elapsed: ' + elapsed_seconds + 's' + '\n')
+        print('Filament: ' + filament_type + '\n')
+        print('Nozzle Temp: ' + nozzle_temp + '°C (current) ' + '/ ' + nozzle_target_temp + '°C (target)' + '\n')
+        print('Plate Temp: ' + plate_temp + '°C (current) ' + '/ ' + plate_target_temp + '°C (target)' + '\n')
+        print('Chamber Temp: ' + chamber_temp + '°C (current)' + '\n')
+
+
 
 getprinterstatus()
